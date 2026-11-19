@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mapa de correlatividades y cambio de plan – Sistemas</title>
+<style>
+:root{--bg:#fff;--surf:#f4f8fb;--ink:#14293a;--mut:#4d6272;--line:#c6d6e2;--ttl:#00507f;--acc:#0077bb;--accbg:#dcecf7;--no:#8f5300;--nobg:#fcecc9;--mid:#7a22b3;--midbg:#f0e1fa;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1a24;--surf:#152532;--ink:#e8f0f6;--mut:#9db0bf;--line:#2f4457;--ttl:#8fd0f5;--acc:#5db8ec;--accbg:#12354d;--no:#f2bb5a;--nobg:#3d2d0e;--mid:#c88cea;--midbg:#34204a}}
+:root[data-theme="dark"]{--bg:#0e1a24;--surf:#152532;--ink:#e8f0f6;--mut:#9db0bf;--line:#2f4457;--ttl:#8fd0f5;--acc:#5db8ec;--accbg:#12354d;--no:#f2bb5a;--nobg:#3d2d0e;--mid:#c88cea;--midbg:#34204a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Source Serif 4",Georgia,serif}
+main{max-width:1200px;margin:0 auto;padding:12px 10px 24px}
+h1{font:700 1.6rem/1.2 "Segoe UI",system-ui,sans-serif;margin:6px 0}
+h2{font:600 1.05rem/1.3 "Segoe UI",system-ui,sans-serif;margin:0 0 8px}
+p{margin:0 0 10px}.mut{color:var(--mut);font-size:.9rem}
+.box{background:var(--surf);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:14px 0}
+label,button,select{font:.92rem "Segoe UI",system-ui,sans-serif}
+select{padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center}
+input[type=checkbox]{width:18px;height:18px;accent-color:var(--acc);vertical-align:middle}
+.leg{display:flex;gap:8px 16px;flex-wrap:wrap;font:.82rem "Segoe UI",system-ui,sans-serif;margin:6px 0 10px}
+.leg i{display:inline-block;width:14px;height:14px;border-radius:3px;border:2px solid var(--line);vertical-align:-2px;margin-right:5px}
+#board{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x proximity}
+.col{flex:1 0 190px;min-width:0;scroll-snap-align:start}
+.ch{display:flex;justify-content:space-between;align-items:flex-start;gap:6px;font:700 1rem "Segoe UI",system-ui,sans-serif;padding:10px 10px 26px;margin-bottom:8px;background:var(--c);color:#fff;clip-path:polygon(0 0,100% 0,100% calc(100% - 16px),50% 100%,0 calc(100% - 16px))}
+.col:nth-child(1){--c:#9739d7}.col:nth-child(2){--c:#eda82b}.col:nth-child(2) .ch{color:#2a1a00}.col:nth-child(3){--c:#2e8466}.col:nth-child(4){--c:#0077bb}.col:nth-child(5){--c:#00507f}
+.ch button{font-size:.72rem;background:transparent;border:1px solid currentColor;color:inherit;border-radius:5px;padding:2px 7px;cursor:pointer}
+.card{border:2px solid var(--line);border-radius:9px;padding:9px 10px;margin-bottom:9px;background:var(--surf)}
+.card .nm{font:600 .9rem/1.3 "Segoe UI",system-ui,sans-serif}
+.card small{display:block;font:.76rem/1.35 "Segoe UI",system-ui,sans-serif;color:var(--mut);margin-top:3px}
+.card small b{color:var(--no);font-weight:600}
+.card.lk{border-style:dashed;opacity:.62}
+.card.ap{border-color:var(--acc);background:var(--accbg)}
+.card.cu{border-color:var(--mid);background:var(--midbg)}
+.bt{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.bt button{flex:1;font-size:.78rem;padding:5px 4px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.bt button.on{background:var(--acc);color:var(--bg);border-color:var(--acc)}
+.bt button.on.c{background:var(--mid);color:var(--bg);border-color:var(--mid)}
+button.go{background:var(--acc);color:var(--bg);border:0;border-radius:8px;padding:12px 22px;font-weight:600;cursor:pointer}
+button.sec{background:none;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:12px 16px;cursor:pointer;margin-left:8px}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.v{border-radius:10px;padding:16px 18px;margin:14px 0}
+.v.ok{background:var(--accbg);color:var(--acc)}.v.no{background:var(--nobg);color:var(--no)}.v.mid{background:var(--midbg);color:var(--mid)}.v.info{background:var(--accbg);color:var(--acc)}
+.v h2{font-size:1.2rem}.v p,.v li{color:var(--ink)}
+.cnt{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.cnt span{background:var(--surf);border:1px solid var(--line);border-radius:6px;padding:3px 10px;font:.85rem "Segoe UI",system-ui,sans-serif;color:var(--ink)}
+body,body *{font-family:Arial,Helvetica,sans-serif!important}
+h1{color:var(--ttl);font-size:1.9rem;font-weight:700;margin:14px 0 6px}
+.sub{font-style:italic;color:var(--acc);font-size:1.02rem}
+.tabs{margin:-18px 0 0}.tabs i{display:inline-block;width:46px;height:44px;margin-right:8px;background:var(--c);clip-path:polygon(0 0,100% 0,100% 78%,50% 100%,0 78%)}
+.box,.card{background:var(--surf)}
+html,body{margin:0;width:100%;overflow-x:hidden}
+@media(max-width:640px){.col{flex:0 0 80%}}
+</style>
+</head>
+<body>
+<main>
+<div class="tabs" aria-hidden="true"><i style="--c:#9739d7"></i><i style="--c:#eda82b"></i><i style="--c:#2e8466"></i><i style="--c:#0077bb"></i></div>
+<h1>Mapa de tu carrera y diagnóstico de cambio de plan</h1>
+<p class="mut sub">Marcá en el mapa lo que aprobaste y lo que vas a cursar en 2027. Cada materia se habilita cuando tenés aprobadas sus correlativas.</p>
+
+<div class="box">
+  <div class="row">
+    <label>Año de ingreso
+      <select id="ing"><option value="2027">2027</option><option value="2026">2026</option><option value="2025" selected>2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021 o antes</option></select></label>
+    <label><input type="checkbox" id="an15"> Soy Analista (Plan 2015) y quiero la Licenciatura</label>
+  </div>
+</div>
+
+<div class="leg"><span><i></i>Habilitada</span><span><i style="border-style:dashed;opacity:.6"></i>Bloqueada</span><span><i style="border-color:var(--acc);background:var(--accbg)"></i>Aprobada</span><span><i style="border-color:var(--mid);background:var(--midbg)"></i>Cursaré en 2027</span></div>
+<div id="board"></div>
+
+<p style="margin-top:14px"><button class="go" id="go">Ver diagnóstico</button><button class="sec" id="clr">Limpiar todo</button></p>
+<div id="res" aria-live="polite"></div>
+<p class="mut">Orientativo, según los recorridos de transición informados por la facultad. No evalúa equivalencias ni regularidades: confirmalo con Secretaría Académica.</p>
+</main>
+<script>
+var P=[
+[1,"Sistemas y Organizaciones","A",[]],[2,"Fundamentos de Programación","A",[]],[3,"Cálculo Diferencial e Integral","A",[]],[4,"Lógica y Álgebra","A",[]],[5,"Lecto-comprensión en Inglés","A",[]],[6,"Derechos Humanos y Tecnología","C",[]],[7,"Fundamentos de Computación","C",[]],
+[8,"Ingeniería de Software I","A",[101,102]],[9,"Algoritmos y Estructuras de Datos","A",[102,104]],[10,"Programación Orientada a Objetos","A",[102,105,107]],[11,"Matemática Discreta","A",[104]],[12,"Ecuaciones Diferenciales y Cálculo Multivariado","C",[103]],[13,"Arquitectura de Computadoras","C",[102,107]],
+[14,"Ingeniería de Software II","A",[208,209,210]],[15,"Bases de Datos","A",[209,210,211]],[16,"Sistemas Operativos","A",[209,211,213]],[17,"Probabilidad y Estadística","A",[211,212]],[18,"Paradigmas y Lenguajes","C",[209,210,213]],[19,"Ética Profesional","C",[106,208]],[20,"Programación Avanzada","C",[209,210]],[21,"Taller de Integración","C",["T3"]],
+[22,"Inteligencia Artificial","A",[315,317,318]],[23,"Bases de Datos Avanzadas","A",[315,320]],[24,"Comunicaciones y Redes","A",[316,317]],[25,"Metodología de la Investigación","A",[208,317]],[26,"Investigación Operativa","C",[317]],[27,"Optativa 1","C",[314,315,320,321]],[28,"Computación Avanzada","C",[315,316]],[29,"Optativa 2","C",[316,318,320]],
+[30,"Seguridad y Auditoría","A",[319,424]],[31,"Administración de Recursos","A",[423,424]],[32,"Teoría de Computabilidad","A",[318,423,424]],[33,"Tesina de Grado","A",["T5"]],[34,"Interfaz Hombre Máquina","C",[320,428]],[35,"Optativa 3","C",[423]]
+];
+var Y=["Primer año","Segundo año","Tercer año","Cuarto año","Quinto año"],cut=[7,13,21,29,35],byc={},S={};
+function yr(i){for(var k=0;k<5;k++)if(i<=cut[k])return k+1}
+P.forEach(function(p){byc[yr(p[0])*100+p[0]]=p;S[p[0]]=0});
+function miss(p){var m=[];p[3].forEach(function(q){if(q=="T3"){for(var i=14;i<=20;i++)if(S[i]!=1){m.push("el resto de tercero");break}}else if(q=="T5"){for(var j=30;j<=35;j++)if(j!=33&&S[j]!=1){m.push("el resto de quinto");break}}else{var t=byc[q];if(t&&S[t[0]]!=1)m.push(t[1])}});return m}
+function norm(){var ch=true;while(ch){ch=false;P.forEach(function(p){if(S[p[0]]&&miss(p).length){S[p[0]]=0;ch=true}})}}
+var B=document.getElementById("board");
+function draw(){var x=B.scrollLeft,h="";
+ for(var y=1;y<=5;y++){h+='<div class="col"><div class="ch"><span>'+Y[y-1]+'</span><button type="button" data-y="'+y+'">Todo aprobado</button></div>';
+  P.forEach(function(p){var i=p[0];if(yr(i)!=y)return;var m=miss(p),lk=m.length>0,cl=lk?"lk":S[i]==1?"ap":S[i]==2?"cu":"";
+   h+='<div class="card '+cl+'"><div class="nm">'+p[1]+'</div><small>'+(p[2]=="A"?"Anual":"Cuatrimestral")+(lk?' · <b>Necesita: '+m.join(", ")+'</b>':'')+'</small>';
+   if(!lk)h+='<div class="bt"><button type="button" data-i="'+i+'" data-s="1" class="'+(S[i]==1?"on":"")+'">Aprobada</button><button type="button" data-i="'+i+'" data-s="2" class="c '+(S[i]==2?"on":"")+'">Cursaré 2027</button></div>';
+   h+='</div>'});h+='</div>'}
+ B.innerHTML=h;B.scrollLeft=x}
+B.addEventListener("click",function(e){var d=e.target.dataset;if(!d)return;
+ if(d.i){S[d.i]=S[d.i]==+d.s?0:+d.s;norm();draw()}
+ else if(d.y){for(var k=0;k<3;k++)P.forEach(function(p){if(yr(p[0])==+d.y&&!miss(p).length)S[p[0]]=1});draw()}});
+document.getElementById("clr").onclick=function(){for(var i in S)S[i]=0;draw();document.getElementById("res").innerHTML=""};
+draw();
+function card(c,t,b){return '<div class="v '+c+'"><h2>'+t+'</h2>'+b+'</div>'}
+function res(h){var r=document.getElementById("res");r.innerHTML=h;window.scrollTo({top:r.getBoundingClientRect().top+window.pageYOffset-8,behavior:"smooth"})}
+document.getElementById("go").onclick=function(){
+ var ing=+document.getElementById("ing").value,an=document.getElementById("an15").checked,R="";
+ if(an)R+=card("info","Analista Plan 2015 hacia la Licenciatura 2026","<p>El cuarto año del plan 2026 recién se abre en 2029. Consultá en Secretaría Académica la matriz de equivalencias entre la Licenciatura 2026 y el título de Analista 2015.</p>");
+ if(ing==2027){res(R+card("ok","Ingresás directamente al plan nuevo","<p>Quienes ingresan en 2027 comienzan su trayectoria en el Plan de Estudios 2026. No hay decisión que tomar.</p>"));return}
+ if(ing==2026){res(R+card("ok","Pasás automáticamente al plan nuevo en segundo año","<p>Se te reconocen las regularidades y los espacios aprobados según el régimen de equivalencias. Lo que te quede de primer año (por ejemplo Fundamentos de Programación) lo harás en el plan nuevo por equivalencia.</p>"));return}
+ var n={1:0,2:0,3:0,4:0,5:0},h3=0,bl=[],blk=[];
+ P.forEach(function(p){var i=p[0];if(S[i]!=1)n[yr(i)]++;
+  if(yr(i)!=3||S[i]==1)return;var ms=[];p[3].forEach(function(q){if(typeof q=="number"){var m=byc[q];if(m&&yr(m[0])<=2&&S[m[0]]!=1)ms.push(m[1])}});
+  if(ms.length){blk.push(p[1]+" (requiere "+ms.join(", ")+")");ms.forEach(function(x){if(bl.indexOf(x)<0)bl.push(x)})}else h3++});
+ var a12=n[1]+n[2],a3=n[3],a45=n[4]+n[5],anio=Math.min(2027-ing+1,5);
+ var cnt='<div class="cnt"><span>Pendientes 1.º: '+n[1]+'</span><span>2.º: '+n[2]+'</span><span>3.º: '+n[3]+'</span><span>4.º: '+n[4]+'</span><span>5.º: '+n[5]+'</span></div><p class="mut">Por tu año de ingreso estarías en '+(anio==5?"5.º año o más":anio+".º año")+' en 2027.</p>',cls,t,b;
+ if(!a12&&!a3&&!a45)R+=card("ok","Ya completaste el cursado","<p>No tenés materias pendientes marcadas. Quedate en el plan 2010.</p>");
+ else if(anio==3||a3>=5){
+  if(h3>=5){cls="no";t="No conviene cambiarte de plan";b="<p>Tenés "+h3+" materias de tercero habilitadas para cursar según las correlatividades (de "+a3+" pendientes, incluyendo Taller de Integración). Recién en 2028 se dicta tercer año del plan nuevo, así que te conviene seguir en el plan 2010, donde sí se dicta en 2027.</p>"}
+  else if(a3>0&&bl.length){cls="ok";t="Conviene cambiarte de plan";b="<p>De tus "+a3+" materias pendientes de tercero, solo "+h3+" están habilitadas por correlatividades. El resto depende de: "+bl.join(", ")+". En 2027 esas materias solo se cursan en el plan nuevo; en el plan 2010 solo se pueden rendir libres. Cambiarte te permite cursarlas y destrabar tercero.</p><p class=\"mut\">Alternativa: seguir en el plan 2010, cursar lo habilitado y rendir libres esas materias.</p>"}
+  else if(a12>a3){cls="ok";t="Conviene cambiarte de plan";b="<p>Tu cursada pendiente es en su mayoría de primero y segundo año ("+a12+" materias), que en 2027 se dictan solo en el plan nuevo. Tené en cuenta Comunicación Oral y Escrita (primer año), correlativa de Metodología de la Investigación, de segundo año, 2.º cuatrimestre.</p>"}
+  else{cls="mid";t="Caso intermedio: conviene consultarlo";b="<p>Tenés "+a3+" materias de tercero y "+a12+" de primero y segundo. Por la proporción, parece más seguro seguir en el plan 2010, pero hay que mirar caso por caso con las equivalencias.</p>"}
+  R+=card(cls,t,cnt+b)}
+ else R+=card("no","No conviene cambiarte de plan",cnt+"<p>Estarías en cuarto o quinto año en 2027"+(a3?" y aún adeudás "+a3+" espacios de tercero":"")+(a12?"; los "+a12+" de primero y segundo habría que rendirlos libres":"")+". El cuarto año del plan nuevo recién abre en 2029, por lo que te conviene continuar en el plan 2010.</p>");
+ var pl="";if(n[4]>0)pl+="<li>Cuarto año del plan 2010 se dicta hasta 2028.</li>";if(n[5]>0||n[4]>0)pl+="<li>Quinto año del plan 2010 se dicta hasta 2029.</li>";
+ if(pl)R+=card("mid","Plazos del plan 2010","<ul>"+pl+"<li>Después de eso, solo se podrán rendir materias (hasta 2032 en la Licenciatura).</li></ul>");
+ if(blk.length)R+=card("info","Correlatividades que te traban","<ul><li>"+blk.join("</li><li>")+"</li></ul>");
+ var inc=0;P.forEach(function(p){if(S[p[0]]==2&&yr(p[0])<=2)inc++});
+ if(inc)R+=card("mid","Atención con lo que marcaste para 2027","<p>Marcaste "+inc+" materia(s) de primero o segundo año para cursar. En el plan 2010 no se dictan en 2027: solo se cursan en el plan nuevo.</p>");
+ res(R)};
+</script>
+</body>
+</html>
